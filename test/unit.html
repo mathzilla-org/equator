@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <!-- allow fancy checkmarks to show up -->
+    <meta charset="UTF-8">
+
+    <!-- complain about uncaught errors -->
+    <script type="text/javascript">
+    window.onerror = function() {
+      document.documentElement.style.background = 'red';
+    };
+    </script>
+
+    <!-- better living through jQuery -->
+    <script type="text/javascript" src="support/jquery-1.5.2.js"></script>
+
+    <!-- mocha test framework -->
+    <script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
+    <link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css" />
+
+    <!-- home-grown assertions -->
+    <script src="support/assert.js" type="text/javascript"></script>
+
+    <!-- configure mocha and chai -->
+    <script type="text/javascript">
+      var outputXunit = new URLSearchParams(location.search).get('xunit');
+
+      mocha.setup({
+        ui: 'tdd',
+        reporter: outputXunit ? 'xunit' : 'html'
+      });
+
+      var xunit = '';
+      Mocha.process.stdout.write = function(line) { xunit += line; };
+    </script>
+
+    <!-- include the library with the tests inlined -->
+    <script id="equator" type="text/javascript" src="../build/equator.test.js"
+      onerror="alert('couldn\'t find `build/equator.test.js`. Please run `make test` before opening this file.')">
+    </script>
+
+    <!-- include Equator-basic -->
+    <link rel="stylesheet" type="text/css" href="../build/equator.css" />
+    <script type="text/javascript" src="../build/equator-basic.js"></script>
+    <script type="text/javascript">
+      MQBasic = Equator.noConflict().getInterface(Equator.getInterface.MAX);
+      MQ = Equator.getInterface(Equator.getInterface.MAX);
+    </script>
+
+  </head>
+
+  <body>
+    <h1>Unit Tests</h1>
+    <div id="mocha"></div>
+    <div id="mock"></div>
+
+    <script type="text/javascript">
+      teardown(function() { $('#mock').empty(); });
+      var runner = mocha.run();
+
+      runner.on('end', function() {
+        setTimeout(function() {
+          if (window.xunitCallback) xunitCallback(xunit);
+        });
+      });
+    </script>
+  </body>
+</html>

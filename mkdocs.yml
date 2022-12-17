@@ -1,0 +1,23 @@
+site_name: Equator
+site_url: http://docs.equator.com
+repo_url: https://github.com/equator/equator
+site_description: Easily type math in your webapp
+site_author: Han, Jeanine, Mary
+site_favicon: http://equator.com/favicon.ico
+google_analytics: ['UA-73742753-3', 'docs.equator.com']
+
+pages:
+  - index.md
+  - Getting_Started.md
+  - 'API Methods': Api_Methods.md
+  - 'Config Options': Config.md
+  - 'Under the Hood': Contributing.md
+  - Code_of_Conduct.md
+
+markdown_extensions:
+  - toc:
+      permalink: True
+
+theme: readthedocs
+extra_css:
+  - extra.css
